@@ -164,7 +164,9 @@ function honehome() : Page {
     // Exact match
     foreach ( $wants as $want ) {
       foreach ( kirby()->languages() as $lang ) {
-        if ( $want == strtolower( str_replace( '_', '-', $lang->locale() ) ) ) {
+        $whatever = strtolower( localeToLangCode( $lang->locale() ) );
+        // header( "X-omz13-hh-match-try-e-" . $i++ . ":" . $want . " with " . $whatever );
+        if ( $want == $whatever ) {
           if ( $debug == true ) {
             header( 'X-omz13-hh-Match:EXACT ' . $want . ' to (' . $lang->code() . ') ' . $lang->locale() );
           }
@@ -175,14 +177,16 @@ function honehome() : Page {
 //        return kirby()->site()->visit( $home, $lang->code() );
         }
       }
-    }
+    }//end foreach
 
     // Best match if ignore any regional in request
     foreach ( $wants as $want ) {
       $wantwant = explode( '-', (string) $want );
       $want     = $wantwant[0];
       foreach ( kirby()->languages() as $lang ) {
-        if ( $want == strtolower( str_replace( '_', '-', $lang->locale() ) ) ) {
+        $whatever = strtolower( localeToLangCode( $lang->locale() ) );
+        // header( "X-omz13-hh-match-try-b-" . $i++ . ":" . $want . " with " . $whatever );
+        if ( $want == $whatever ) {
           if ( $debug == true ) {
             header( 'X-omz13-hh-Match:BEST ' . $want . ' to (' . $lang->code() . ') ' . $lang->locale() );
           }
@@ -190,14 +194,16 @@ function honehome() : Page {
 //        go( $home->urlForLanguage( $lang->code() ), 302 );
         }
       }
-    }
+    }//end foreach
 
     // Near match if ignore regional in both request and what's available
     foreach ( $wants as $want ) {
       $wantwant  = explode( '-', (string) $want );
       $shortwant = $wantwant[0];
       foreach ( kirby()->languages() as $lang ) {
-        if ( $shortwant == strtolower( explode( '_', $lang->locale() )[0] ) ) {
+        $whatever = explode( '-', localeToLangCode($lang->locale() ))[0];
+        // header( "X-omz13-hh-match-try-n-" . $i++ . ":" . $shortwant . " with " . $whatever );
+        if ( $shortwant == $whatever ) {
           if ( $debug == true ) {
             header( 'X-omz13-hh-Match:NEAR ' . $want . ' to (' . $lang->code() . ') ' . $lang->locale() );
           }
@@ -205,7 +211,7 @@ function honehome() : Page {
 //        go( $home->urlForLanguage( $lang->code() ), 302 );
         }
       }
-    }
+    }//end foreach
 
     // Fall through...
     if ( $debug == true ) {
