@@ -2,5 +2,14 @@
 VERSION 0  BETA
 ===============
 
+   Version 0.2 - beta
+      09/01/2019 23:58  0.2.0  initial release
+         5db70f0 Chore: composer update
+         eb80752 Feat: honehomeLang page method; closes #1
+         5c6dbc9 Chore: style
+         344b5e1 Fix: version number was borked
+         c5c4509 Refactor
+         be1a13d Fix: Closes #2
+
    Version 0.1 - beta
       09/01/2019 01:09  0.1.0  initial release
