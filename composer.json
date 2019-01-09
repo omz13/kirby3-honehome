@@ -1,0 +1,69 @@
+{
+  "name": "omz13/kirby3-honehome",
+  "description": "kirby3 plugin to handle homepage redirection",
+  "keywords": [
+    "kirby3",
+    "plugin"
+  ],
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "David Somers",
+      "email": "dsomers@omz13.com",
+      "homepage": "https://meldingstuff.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.1",
+    "getkirby/cms": "^3.0.0-RC-2.0"
+  },
+  "require-dev": {
+    "jakub-onderka/php-parallel-lint": "^1.0",
+    "liip/rmt": "^1.4",
+    "localheinz/composer-normalize": "^0.8.0",
+    "omz13/omz13-coding-standard": "dev-master",
+    "phpmd/phpmd": "^2.6",
+    "phpstan/phpstan": "^0.10.7",
+    "phpstan/phpstan-strict-rules": "^0.10.1",
+    "squizlabs/php_codesniffer": "^3.4"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "autoload": {
+    "files": [
+      "src/config.php"
+    ]
+  },
+  "minimum-stability": "beta",
+  "scripts": {
+    "build": [
+      "@sanity",
+      "composer dumpautoload -o"
+    ],
+    "fix": [
+      "./vendor/bin/phpcbf ./src/*",
+      "./vendor/bin/phpcs -s ./src/*"
+    ],
+    "lint": "./vendor/bin/parallel-lint ./src/*",
+    "mess": "./vendor/bin/phpmd ./src text codesize,controversial,design,unusedcode",
+    "sanity": [
+      "make tools",
+      "@lint",
+      "./vendor/bin/phpcs -n ./src/*",
+      "@stan",
+      "@mess"
+    ],
+    "stan": "./vendor/bin/phpstan analyse --level 5 ./src",
+    "style": "./vendor/bin/phpcs ./src/*",
+    "zip": [
+      "composer install --no-dev",
+      "composer remove getkirby/cms",
+      "composer dumpautoload -o",
+      "composer archive --format=zip --dir=dist",
+      "composer require getkirby/cms:'^3.0.0-RC-2.0'",
+      "composer dumpautoload -o"
+    ]
+  }}
