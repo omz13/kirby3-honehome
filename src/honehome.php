@@ -20,6 +20,8 @@ use function header;
 use function json_encode;
 use function kirby;
 use function str_replace;
+use function stripos;
+use function strlen;
 use function strpos;
 use function strtolower;
 use function strtoupper;
@@ -29,9 +31,24 @@ define( 'HONEHOME_VERSION', '0.6.0' );
 define( 'HONEHOME_CONFIGURATION_PREFIX', 'omz13.honehome' );
 
 /*
- * Convert a PHP locale code to an HTML languae code
+ * Convert a PHP locale code to an HTML language code (and strip any pesky .utf8 or .utf-8 affix)
 */
 function localeToLangCode( string $locale ) : string {
+  // Normalize
+  $locale = strtolower( $locale );
+  // Rtrim .utf-8 from $locale
+  $l = strlen( $locale ) - strlen( ".utf-8" );
+  if ( $l > 0 && stripos( $locale, ".utf-8", $l ) !== false ) {
+    $locale = substr( $locale, 0, -strlen( ".utf-8" ) );
+  } else {
+    // Rtrim .utf8 from $locale
+    $l = strlen( $locale ) - strlen( ".utf8" );
+    if ( $l > 0 && stripos( $locale, ".utf8", $l ) !== false ) {
+      $locale = substr( $locale, 0, -strlen( ".utf8" ) );
+    }
+  }
+  // Huzzah! $locale is now sanitized from that pesky .utf suffix
+
   $x = explode( '_', $locale );
 
   if ( count( $x ) == 1 ) {
