@@ -4,7 +4,9 @@
 
 ## Coffee, Beer, etc.
 
-This plugin was developed because I had an itch that needed scratching. I wanted a multi-language site to switch to the best-matching language indicated by a client's `Accept-Language` instead of the default one set in the site. The code was nastier to do than I thought, it had some evil edge cases, and after being refactored became something quite elegant. That the format for languages in HTML and HTTP are subtly different was just what I needed make developing this more difficult than it should be (and if you look at the code, that is why there are tortuous substitutions between hyphens and underscores all over the place).
+This plugin was developed because I had an itch that needed scratching. I wanted a multi-language site to switch to the best-matching language indicated by a client's `Accept-Language` instead of the default one set in the site. The code was nastier to do than I thought, it had some evil edge cases, and after being refactored became something quite elegant. That the format for languages in HTML and HTTP are subtly different was just what I needed make developing this more difficult than it should be (and if you look at the code, that is why there are tortuous substitutions between hyphens and underscores all over the place). The `utf8` suffix was similarly a thing to work around.
+
+A bit of trivia. When I started to work on this plugin, it was called _HomeHome_ (because it made the home page twice as nice). And then one day I did a typo and called it _HoneHome_. But "hone" is a nice work because the plugin really "hones" the homepage. So it became _HoneHome_.
 
 This plugin is free but if you use it in a commercial project to show your support you are welcome to:
 - [make a donation 🍻](https://www.paypal.me/omz13/10) or
@@ -26,9 +28,10 @@ When would you use this plugin?
 
 The functional specification:
 
-- You want to replace a homepage by another page.
 - In a multi-language installation, the homepage returns the localized homepage based on the best-match against a client's `Accept-Langauge` request.
-- In a multi-language installation, you want the HTML `lang` attribute set.
+- Provides a page method (`honehomeLang`) to set the HTML `lang` attribute (which for multi-language installations is a very good thing to do).
+- A site's homepage can be set to a page specified from either a configuration file (`site/content/content.php`) or a panel content field (`content/site.txt` via `site/blueprints/site.yml`).
+
 
 #### Caveat
 
@@ -69,21 +72,21 @@ If your project itself is under git, then you need to add the plugin as a submod
 
 ### Configuration
 
-The following mechanisms can be used to modify the plugin's behavior.
+The following mechanisms can be used to modify the plugin's behavior and your kirby site.
 
 #### site/snippets/header.php
 
-If you are running kirby as a multi-language system, for the multi-language to work nicely, you needed pages to indicate what language they are in. This plugin contains a small helper function - `omz13\k3honehome\localeToLangCode` - to convert a page's kirby locale into the correct html `lang` attribute.
+If you are running kirby as a multi-language system, for the multi-language to work nicely, you needed pages to indicate what language they are in. This plugin contains a page method - `honehomeLang( string $default = 'en' ) : string` - to return the locale in the correct format for use as an `<html>` elements `lang` attribute.
 
 TL;DR: change your `site/snippets/header.php` so the opening `<html>` sets the `lang` attribute:
 
 ```
-<html lang="<?php if ( $kirby->multilang() ) { echo \omz13\k3honehome\localeToLangCode( $kirby->language()->locale() ); } else { echo "en"; } ?>">
+<html lang="<?= $page->honehomeLang('en') ?>">
 ```
 
 #### via `site/config/config.php`
 
-- `omz13.honehome.disable` - optional - default `false` - a boolean which, if `true`, disables the plugin.
+- `omz13.honehome.disable` - optional - default `false` - a boolean which, if `true`, disables the plugin (except for the `honehomeLang` page method.
 
 - `omz13.honehome.homelanding` - optional - a string which is the name of the page to be used for the homepage. This setting takes priority over that specified in _c.f._ `homelanding` content field.
 
