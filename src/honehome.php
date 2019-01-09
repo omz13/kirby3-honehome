@@ -27,7 +27,7 @@ use function strtolower;
 use function strtoupper;
 use function substr;
 
-define( 'HONEHOME_VERSION', '0.6.0' );
+define( 'HONEHOME_VERSION', '0.1.0' );
 define( 'HONEHOME_CONFIGURATION_PREFIX', 'omz13.honehome' );
 
 /*
