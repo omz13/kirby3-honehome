@@ -19,7 +19,6 @@ use function explode;
 use function header;
 use function json_encode;
 use function kirby;
-use function str_replace;
 use function stripos;
 use function strlen;
 use function strpos;
@@ -201,7 +200,7 @@ function honehome() : Page {
       $wantwant  = explode( '-', (string) $want );
       $shortwant = $wantwant[0];
       foreach ( kirby()->languages() as $lang ) {
-        $whatever = explode( '-', localeToLangCode($lang->locale() ))[0];
+        $whatever = explode( '-', localeToLangCode( $lang->locale() ) )[0];
         // header( "X-omz13-hh-match-try-n-" . $i++ . ":" . $shortwant . " with " . $whatever );
         if ( $shortwant == $whatever ) {
           if ( $debug == true ) {
