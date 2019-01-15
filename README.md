@@ -85,7 +85,7 @@ TL;DR: change your `site/snippets/header.php` so the opening `<html>` sets the `
 
 - `omz13.honehome.homelanding` - optional - a string which is the name of the page to be used for the homepage. This setting takes priority over that specified in _c.f._ `homelanding` content field.
 
-#### Content fields in `content/site.txt` (via blueprint `blueprint/site.yml`)
+#### Content fields in `content/site.txt` (via blueprint `site/blueprints/site.yml`)
 
 The plugin uses the following content fields. These are all optional; if missing or empty, they are assumed to be not applicable vis-à-via their indicated functionality.
 
