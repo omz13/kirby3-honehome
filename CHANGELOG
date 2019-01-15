@@ -1,4 +1,16 @@
 
+VERSION 1  RELEASE
+==================
+
+   Version 1.0 - Release
+      15/01/2019 20:17  1.0.0  initial release
+         0a200f0 Chore: style
+         8b6e739 Chore: Kirby 3.0
+         21bcd80 Docs: beautification
+         1e0dfe6 Feat: inbuilt blueprint (experimental)
+         03c468b Docs: typo
+         d8b672e Docs: Kirby 3.0
+
 VERSION 0  BETA
 ===============
 
