@@ -1,6 +1,6 @@
 # Kirby3 HoneHome
 
-**Requirement:** Kirby 3 (3.0 RC2 or better)
+**Requirement:** Kirby 3.0
 
 ## Coffee, Beer, etc.
 
@@ -31,11 +31,6 @@ The functional specification:
 - In a multi-language installation, the homepage returns the localized homepage based on the best-match against a client's `Accept-Langauge` request.
 - Provides a page method (`honehomeLang`) to set the HTML `lang` attribute (which for multi-language installations is a very good thing to do).
 - A site's homepage can be set to a page specified from either a configuration file (`site/content/content.php`) or a panel content field (`content/site.txt` via `site/blueprints/site.yml`).
-
-
-#### Caveat
-
-Kirby3 is under beta, therefore this plugin, and indeed kirby3 itself, may or may not play nicely with each other, or indeed work at all: use it for testing purposes only; if you use it in production then you should be aware of the risks and know what you are doing.
 
 #### Roadmap
 
