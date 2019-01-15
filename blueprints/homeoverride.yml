@@ -1,0 +1,13 @@
+type: group
+fields:
+  homelanding:
+    label:
+      en: Home Override
+      de: Überschreiben Sie die Homepage mit
+      fr: Ignorer la page d'accueil avec
+      nl: Negeer Homepage met
+      sv: Åsidosätt hemsida med
+    type: select
+    options: query
+    query: site.children.visible
+    width: 1/3

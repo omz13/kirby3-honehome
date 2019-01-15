@@ -10,6 +10,11 @@ Kirby::plugin(
         'homelanding' => '',
       ],
 
+      'blueprints' => [
+        'honehome/homeoverride' => dirname( __FILE__, 2 ) . '/blueprints/homeoverride.yml',
+      ],
+
+
       'routes'      => [
         [
           'pattern' => '',
