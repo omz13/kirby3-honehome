@@ -95,7 +95,7 @@ The plugin uses the following content fields. These are all optional; if missing
 
 Here is a sample snippet that you could use in `site/blueprints/site.yml` so you could change the homepage to any visible children in the root. Clearly you would want to be more flexible, by perhaps filtering on a template, but it gives an idea.
 
-```
+```yaml
 fields:
   homelanding:
     label:
