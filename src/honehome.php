@@ -80,7 +80,7 @@ function honehome() : Page {
     if ( $debug == true ) {
       header( "X-omz13-hh-from-c: " . $n );
     }
-    $home = kirby()->site()->find( $n )->first();
+    $home = kirby()->site()->find( $n );
     assert( $home != null ); // throw configuration error
   }
 
@@ -90,7 +90,7 @@ function honehome() : Page {
       if ( $debug == true ) {
         header( "X-omz13-hh-from-f: " . $n );
       }
-      $home = kirby()->site()->find( $n )->first();
+      $home = kirby()->site()->find( $n );
       assert( $home != null );
     } else {
       $home = kirby()->site()->homePage();

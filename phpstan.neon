@@ -8,6 +8,7 @@ parameters:
 	ignoreErrors:
 	- '#Cannot call method toString\(\) on array|Kirby\\Cms\\Field.#'
 	- '#Cannot call method [a-z+]\(\) on Kirby\\Cms\\Language|null.#'
+	- '#Function omz13\\k3honehome\\honehome\(\) should return Kirby\\Cms\\Page but returns Kirby\\Cms\\Page|Kirby\\Cms\\Pages.#'
 	tmpDir: %rootDir%/tmp
 	level: 5
 includes:
