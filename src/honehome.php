@@ -5,6 +5,7 @@ namespace omz13\k3honehome;
 use Kirby\Cms\Page;
 
 use const HONEHOME_CONFIGURATION_PREFIX;
+use const PHP_URL_PATH;
 
 use function array_key_exists;
 use function array_keys;
@@ -19,6 +20,7 @@ use function explode;
 use function header;
 use function json_encode;
 use function kirby;
+use function parse_url;
 use function stripos;
 use function strlen;
 use function strpos;
@@ -108,7 +110,8 @@ function honehome() : Page {
   }
 
   // Never say never
-  assert( $_SERVER['REQUEST_URI'] == '/' );
+  // Test path not url, just in case there's a fragment or query
+  assert( parse_url( $_SERVER['REQUEST_URI'] , PHP_URL_PATH ) == '/' );
 
   if ( $debug == true ) {
     header( "X-omz13-hh-Host:" . $_SERVER['HTTP_HOST'] );
