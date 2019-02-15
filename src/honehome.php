@@ -26,7 +26,6 @@ use function strtolower;
 use function strtoupper;
 use function substr;
 
-define( 'HONEHOME_VERSION', '0.1.0' );
 define( 'HONEHOME_CONFIGURATION_PREFIX', 'omz13.honehome' );
 
 /*
@@ -74,24 +73,24 @@ function honehome() : Page {
     return kirby()->site()->homePage();
   }
 
-  $home = ""; // reset
+  $home = null; // reset
 
   $n = kirby()->option( HONEHOME_CONFIGURATION_PREFIX . '.homelanding' );
   if ( $n != null && $n != '' ) {
     if ( $debug == true ) {
       header( "X-omz13-hh-from-c: " . $n );
     }
-    $home = kirby()->site()->find( $n );
+    $home = kirby()->site()->find( $n )->first();
     assert( $home != null ); // throw configuration error
   }
 
-  if ( $home == "" ) {
+  if ( $home == null ) {
     $n = kirby()->site()->content()->get( 'homelanding' )->toString();
     if ( $n != "" ) {
       if ( $debug == true ) {
         header( "X-omz13-hh-from-f: " . $n );
       }
-      $home = kirby()->site()->find( $n );
+      $home = kirby()->site()->find( $n )->first();
       assert( $home != null );
     } else {
       $home = kirby()->site()->homePage();

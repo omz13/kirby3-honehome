@@ -5,7 +5,9 @@ parameters:
 	polluteScopeWithLoopInitialAssignments: true
 	earlyTerminatingMethodCalls: []
 	universalObjectCratesClasses: []
-	ignoreErrors: []
+	ignoreErrors:
+	- '#Cannot call method toString\(\) on array|Kirby\\Cms\\Field.#'
+	- '#Cannot call method [a-z+]\(\) on Kirby\\Cms\\Language|null.#'
 	tmpDir: %rootDir%/tmp
 	level: 5
 includes:

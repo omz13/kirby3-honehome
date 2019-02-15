@@ -1,5 +1,6 @@
 {
   "name": "omz13/kirby3-honehome",
+  "type": "kirby-plugin",
   "description": "kirby3 plugin to handle homepage redirection",
   "keywords": [
     "kirby3",
@@ -17,11 +18,11 @@
   ],
   "require": {
     "php": ">=7.1",
-    "getkirby/cms": "^3.0.0-RC-2.0"
+    "getkirby/composer-installer": "^1.1"
   },
   "require-dev": {
+    "getkirby/cms": "^3.0.1",
     "jakub-onderka/php-parallel-lint": "^1.0",
-    "liip/rmt": "^1.4",
     "localheinz/composer-normalize": "^0.8.0",
     "omz13/omz13-coding-standard": "dev-master",
     "phpmd/phpmd": "^2.6",
@@ -57,14 +58,7 @@
       "@stan",
       "@mess"
     ],
-    "stan": "./vendor/bin/phpstan analyse --level 5 ./src",
-    "style": "./vendor/bin/phpcs ./src/*",
-    "zip": [
-      "composer install --no-dev",
-      "composer remove getkirby/cms",
-      "composer dumpautoload -o",
-      "composer archive --format=zip --dir=dist",
-      "composer require getkirby/cms:'^3.0.0-RC-2.0'",
-      "composer dumpautoload -o"
-    ]
-  }}
+    "stan": "./vendor/bin/phpstan analyse --level 7 ./src",
+    "style": "./vendor/bin/phpcs ./src/*"
+  }
+}
