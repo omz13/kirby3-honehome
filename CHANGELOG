@@ -3,6 +3,9 @@ VERSION 1  RELEASE
 ==================
 
    Version 1.1 - Release
+      15/02/2019 22:57  1.1.1  Release
+         5551733 Fix: assert needs to check path only (otherwise fails if fragment or query provided)
+         b29ee7d Chore: make stan happy
       15/02/2019 20:47  1.1.0  initial release
          034dca3 Feat: install by zip or submodule
 
