@@ -26,6 +26,7 @@ use function strlen;
 use function strpos;
 use function strtolower;
 use function strtoupper;
+use function strrpos;
 use function substr;
 
 define( 'HONEHOME_CONFIGURATION_PREFIX', 'omz13.honehome' );
@@ -36,19 +37,17 @@ define( 'HONEHOME_CONFIGURATION_PREFIX', 'omz13.honehome' );
 function localeToLangCode( string $locale ) : string {
   // Normalize
   $locale = strtolower( $locale );
-  // Rtrim .utf-8 from $locale
-  $l = strlen( $locale ) - strlen( ".utf-8" );
-  if ( $l > 0 && stripos( $locale, ".utf-8", $l ) !== false ) {
-    $locale = substr( $locale, 0, -strlen( ".utf-8" ) );
-  } else {
-    // Rtrim .utf8 from $locale
-    $l = strlen( $locale ) - strlen( ".utf8" );
-    if ( $l > 0 && stripos( $locale, ".utf8", $l ) !== false ) {
-      $locale = substr( $locale, 0, -strlen( ".utf8" ) );
-    }
+  // Clean (.whatever[@whatever])
+  $x = strrpos($locale, '.', 0);
+  if ($x != FALSE ) {
+    $locale = substr( $locale, 0, -$x-1 );
   }
-  // Huzzah! $locale is now sanitized from that pesky .utf suffix
-
+  // And clean a bit more (just in case @whatever)
+  $y = strrpos($locale, '@', 0);
+  if ($y != FALSE ) {
+    $locale = substr( $locale, 0, -$y-1 );
+  }
+  // Huzzah! $locale is now sanitized (which is not the same as canonicalization)
   $x = explode( '_', $locale );
 
   if ( count( $x ) == 1 ) {
