@@ -80,12 +80,12 @@ function localeToLangCode( string $locale ) : string {
   // Clean (.whatever[@whatever])
   $x = strrpos( $locale, '.', 0 );
   if ( $x != false ) {
-    $locale = substr( $locale, 0, -$x - 1 );
+    $locale = substr( $locale, 0, -$x );
   }
   // And clean a bit more (just in case @whatever)
   $y = strrpos( $locale, '@', 0 );
   if ( $y != false ) {
-    $locale = substr( $locale, 0, -$y - 1 );
+    $locale = substr( $locale, 0, -$y );
   }
   // Huzzah! $locale is now sanitized (which is not the same as canonicalization)
   $x = explode( '_', $locale );
