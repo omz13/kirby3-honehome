@@ -1,7 +1,5 @@
 # Kirby3 HoneHome
 
-**Requirement:** Kirby 3.0
-
 ## Coffee, Beer, etc.
 
 This plugin was developed because I had an itch that needed scratching. I wanted a multi-language site to switch to the best-matching language indicated by a client's `Accept-Language` instead of the default one set in the site. The code was nastier to do than I thought, it had some evil edge cases, and after being refactored became something quite elegant. That the format for languages in HTML and HTTP are subtly different was just what I needed make developing this more difficult than it should be (and if you look at the code, that is why there are tortuous substitutions between hyphens and underscores all over the place). The `utf8` suffix was similarly a thing to work around.

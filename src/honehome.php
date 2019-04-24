@@ -2,9 +2,15 @@
 
 namespace omz13\k3honehome;
 
+use Exception;
+use Kirby\Cms\Language;
 use Kirby\Cms\Page;
 
 use const HONEHOME_CONFIGURATION_PREFIX;
+use const LC_ALL;
+use const LC_COLLATE;
+use const LC_CTYPE;
+use const LC_MESSAGES;
 use const PHP_URL_PATH;
 
 use function array_key_exists;
@@ -12,24 +18,58 @@ use function array_keys;
 use function array_merge;
 use function array_push;
 use function array_reduce;
+use function array_values;
 use function arsort;
 use function assert;
 use function count;
 use function define;
 use function explode;
 use function header;
+use function is_array;
+use function is_string;
 use function json_encode;
 use function kirby;
 use function parse_url;
-use function stripos;
-use function strlen;
 use function strpos;
+use function strrpos;
 use function strtolower;
 use function strtoupper;
-use function strrpos;
 use function substr;
 
 define( 'HONEHOME_CONFIGURATION_PREFIX', 'omz13.honehome' );
+
+/*
+ * In kirby 3.1.2 or below, kirby()->language()->locale() returns a string. Nice!
+ * In kirby 3.1.3 or better, kirby()->language()->locale() returns a string or an array
+ * This function tries its best to cope with either.
+ * It is a bit of a fudge.
+ */
+
+function localeFromLang( ?Language $lang = null ) : string {
+  if ( $lang == null ) {
+    $lang = kirby()->language();
+  }
+
+  $l = $lang->locale();
+
+  // kirby < 3.1.3 - locale is a string
+  if ( is_string( $l ) ) {
+    return $l;
+  }
+  if ( is_array( $l ) ) {
+    // array implies kirby >= 3.1.3 where can be array of LC_WHATEVER values.
+    foreach ( [ LC_ALL, LC_CTYPE, LC_COLLATE, LC_MESSAGES ] as $w ) {
+      $s = $lang->locale( $w );
+      if ( $s != null ) {
+        assert( is_string( $s ) ); // to stop stan complaining
+        return $s;
+      }
+    }
+    // Fallback: return first value in the array, and hope its good enough.
+    return array_values( $l )[ '0' ];
+  }
+  throw new Exception( "Getting locale from language borked " . json_encode( $lang->locale() ), 1 );
+}//end localeFromLang()
 
 /*
  * Convert a PHP locale code to an HTML language code (and strip any pesky .utf8 or .utf-8 affix)
@@ -38,14 +78,14 @@ function localeToLangCode( string $locale ) : string {
   // Normalize
   $locale = strtolower( $locale );
   // Clean (.whatever[@whatever])
-  $x = strrpos($locale, '.', 0);
-  if ($x != FALSE ) {
-    $locale = substr( $locale, 0, -$x-1 );
+  $x = strrpos( $locale, '.', 0 );
+  if ( $x != false ) {
+    $locale = substr( $locale, 0, -$x - 1 );
   }
   // And clean a bit more (just in case @whatever)
-  $y = strrpos($locale, '@', 0);
-  if ($y != FALSE ) {
-    $locale = substr( $locale, 0, -$y-1 );
+  $y = strrpos( $locale, '@', 0 );
+  if ( $y != false ) {
+    $locale = substr( $locale, 0, -$y - 1 );
   }
   // Huzzah! $locale is now sanitized (which is not the same as canonicalization)
   $x = explode( '_', $locale );
@@ -164,11 +204,11 @@ function honehome() : Page {
     // Exact match
     foreach ( $wants as $want ) {
       foreach ( kirby()->languages() as $lang ) {
-        $whatever = strtolower( localeToLangCode( $lang->locale() ) );
+        $whatever = strtolower( localeToLangCode( localeFromLang( $lang ) ) );
         // header( "X-omz13-hh-match-try-e-" . $i++ . ":" . $want . " with " . $whatever );
         if ( $want == $whatever ) {
           if ( $debug == true ) {
-            header( 'X-omz13-hh-Match:EXACT ' . $want . ' to (' . $lang->code() . ') ' . $lang->locale() );
+            header( 'X-omz13-hh-Match:EXACT ' . $want . ' to (' . $lang->code() . ') ' . localeFromLang( $lang ) );
           }
           return kirby()->site()->visit( $home, $lang->code() );
 //          kirby()->setCurrentLanguage( $lang->code() );
@@ -184,11 +224,11 @@ function honehome() : Page {
       $wantwant = explode( '-', (string) $want );
       $want     = $wantwant[0];
       foreach ( kirby()->languages() as $lang ) {
-        $whatever = strtolower( localeToLangCode( $lang->locale() ) );
+        $whatever = strtolower( localeToLangCode( localeFromLang( $lang->locale() ) ) );
         // header( "X-omz13-hh-match-try-b-" . $i++ . ":" . $want . " with " . $whatever );
         if ( $want == $whatever ) {
           if ( $debug == true ) {
-            header( 'X-omz13-hh-Match:BEST ' . $want . ' to (' . $lang->code() . ') ' . $lang->locale() );
+            header( 'X-omz13-hh-Match:BEST ' . $want . ' to (' . $lang->code() . ') ' . localeFromLang( $lang ) );
           }
           return kirby()->site()->visit( $home, $lang->code() );
 //        go( $home->urlForLanguage( $lang->code() ), 302 );
@@ -201,11 +241,11 @@ function honehome() : Page {
       $wantwant  = explode( '-', (string) $want );
       $shortwant = $wantwant[0];
       foreach ( kirby()->languages() as $lang ) {
-        $whatever = explode( '-', localeToLangCode( $lang->locale() ) )[0];
+        $whatever = explode( '-', localeToLangCode( localeFromLang( $lang->locale() ) ) )[0];
         // header( "X-omz13-hh-match-try-n-" . $i++ . ":" . $shortwant . " with " . $whatever );
         if ( $shortwant == $whatever ) {
           if ( $debug == true ) {
-            header( 'X-omz13-hh-Match:NEAR ' . $want . ' to (' . $lang->code() . ') ' . $lang->locale() );
+            header( 'X-omz13-hh-Match:NEAR ' . $want . ' to (' . $lang->code() . ') ' . localeFromLang( $lang ) );
           }
           return kirby()->site()->visit( $home, $lang->code() );
 //        go( $home->urlForLanguage( $lang->code() ), 302 );
@@ -225,7 +265,7 @@ function honehome() : Page {
 
   // If no preference requested, or nothing matched the preferene, just use the default language for the homepage
   if ( $debug == true ) {
-    header( 'X-omz13-hh-DefaultTo:(' . kirby()->language()->code() . ') ' . kirby()->language()->locale() );
+    header( 'X-omz13-hh-DefaultTo:(' . kirby()->language()->code() . ') ' . localeFromLang() );
   }
   return kirby()->site()->visit( $home, kirby()->language()->code() );
 //  kirby()->setCurrentLanguage( $lang->code() );

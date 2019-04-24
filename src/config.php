@@ -27,7 +27,7 @@ Kirby::plugin(
       'pageMethods' => [
         'honehomeLang' => function ( string $d = 'en' ) {
           if ( kirby()->multilang() ) {
-            return omz13\k3honehome\localeToLangCode( kirby()->language()->locale() );
+            return omz13\k3honehome\localeToLangCode( omz13\k3honehome\localeFromLang() );
           } else {
             return $d;
           }
