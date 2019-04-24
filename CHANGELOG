@@ -3,6 +3,12 @@ VERSION 1  RELEASE
 ==================
 
    Version 1.1 - Release
+      24/04/2019 14:44  1.1.2  Release
+         7a68cd4 Chore: composer update
+         0de21f1 Chore: stan 0.11
+         283260c Fix #3
+         bb8bce4 Docs: get composer install right
+         b1f6920 Feat: Better locate to lang code (port vis-à-vis xmlsitemap)
       15/02/2019 22:57  1.1.1  Release
          5551733 Fix: assert needs to check path only (otherwise fails if fragment or query provided)
          b29ee7d Chore: make stan happy
